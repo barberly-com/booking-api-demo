@@ -3,16 +3,170 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Barberly Booking API — React examples</title>
+    <title>Barberly Booking API — live examples</title>
+    <meta
+      name="description"
+      content="Working examples of a guest booking flow built on the Barberly Booking API. Open source, running against a live demo tenant."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=Jost:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
       rel="stylesheet"
     />
+    <style>
+      :root {
+        --bg: #151412;
+        --surface: #1e1c19;
+        --surface-hover: #262320;
+        --accent: #d2603a;
+        --text: #ede7db;
+        --muted: #9c9488;
+        --faint: #6e675c;
+        --line: rgba(232, 226, 214, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Geist, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .bar {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        padding: 16px 22px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .wordmark {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .bar span:last-child { font-size: 12px; color: var(--muted); }
+
+      main { max-width: 1020px; margin: 0 auto; padding: 56px 20px 80px; }
+
+      h1 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 40px;
+        font-weight: 400;
+        letter-spacing: -0.01em;
+        margin: 0 0 12px;
+      }
+
+      .lede { font-size: 16px; color: var(--muted); margin: 0 0 10px; max-width: 62ch; line-height: 1.55; }
+
+      .note { font-size: 13px; color: var(--faint); margin: 0 0 40px; max-width: 62ch; line-height: 1.6; }
+
+      .micro {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.15s, border-color 0.15s;
+      }
+
+      .card:hover { background: var(--surface-hover); border-color: var(--accent); }
+
+      .card h2 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 26px;
+        font-weight: 400;
+        margin: 12px 0 8px;
+      }
+
+      .card p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 18px; }
+
+      /* Pinned to the bottom so the links line up however long the blurbs run. */
+      .go { font-size: 13px; color: var(--accent); margin-top: auto; }
+
+      footer {
+        margin-top: 56px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--faint);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      footer a { color: var(--muted); text-decoration: none; }
+      footer a:hover { color: var(--accent); }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="bar">
+      <span class="wordmark">Barberly</span>
+      <span>Booking API &middot; live examples</span>
+    </div>
+
+    <main>
+      <h1>Book an appointment, two ways</h1>
+      <p class="lede">
+        The same guest booking flow &mdash; location, barber, services, time, confirmation &mdash;
+        built twice on the Barberly Booking API. Both are open source and calling the real API
+        as you read this.
+      </p>
+      <p class="note">
+        They run against a throwaway demo tenant with a public key, so every screen shows live
+        data and every booking you make is real. Book as often as you like; the data is
+        disposable.
+      </p>
+
+      <div class="grid">
+        <a class="card" href="/hub/">
+          <span class="micro">Example 1</span>
+          <h2>Appointment hub</h2>
+          <p>
+            One card with four editable fields. The guest fills them in any order and the summary
+            validates the whole thing at the end. Suits salons whose clients arrive knowing what
+            they want.
+          </p>
+          <span class="go">Open the demo &rsaquo;</span>
+        </a>
+
+        <a class="card" href="/wizard/">
+          <span class="micro">Example 2</span>
+          <h2>Guided wizard</h2>
+          <p>
+            Five gated steps with a progress bar and a single forward action. One decision per
+            screen, nothing to skip. Suits salons that want a funnel with no dead ends.
+          </p>
+          <span class="go">Open the demo &rsaquo;</span>
+        </a>
+      </div>
+
+      <footer>
+        <a href="https://github.com/barberly-com/booking-api-demo">Source on GitHub</a>
+        <a href="https://booking-api.barberly.com/docs">API reference</a>
+        <span>MIT licensed</span>
+      </footer>
+    </main>
   </body>
 </html>

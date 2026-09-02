@@ -1,12 +1,12 @@
 # Barberly Booking API — React examples
 
-**[Live demo →](https://booking-api-demo.barberly.com)**
-
 Two working examples of a guest booking flow built on the **Barberly Booking API**.
-Same endpoints, same state machine, two different ways of presenting the flow:
+Same endpoints, same state machine, two different ways of presenting the flow.
 
-- **Appointment hub** — one card with four editable fields; the guest fills them in any order.
-- **Guided wizard** — five gated steps with a progress bar and a single forward action.
+| Live demo | | |
+|---|---|---|
+| **[Appointment hub →](https://booking-api-demo.barberly.com/hub/)** | `hub/`, `src/demos/hub/` | One card with four editable fields; the guest fills them in any order. |
+| **[Guided wizard →](https://booking-api-demo.barberly.com/wizard/)** | `wizard/`, `src/demos/wizard/` | Five gated steps with a progress bar and a single forward action. |
 
 Both cover: location → barber → services (with add-ons) → date & time → guest details →
 confirmation, with **no login**, plus loading, empty and error states.
@@ -19,8 +19,7 @@ npm run dev
 ```
 
 That's the whole setup — no signup, no configuration. The examples call the live API against a
-public demo tenant. Open the printed URL; the floating toggle switches between the two examples
-(`?demo=hub`, `?demo=wizard`).
+public demo tenant. Open the printed URL for the index, or go straight to `/hub/` or `/wizard/`.
 
 ## The API key
 
@@ -51,6 +50,9 @@ from the browser with no proxy in between.
 ## Structure
 
 ```
+index.html                 plain-HTML landing page linking to the demos
+hub/index.html             page for example 1
+wizard/index.html          page for example 2
 src/
   config.js                API base URL + key (the one place to change them)
   api/client.js            fetch wrapper: base URL, key, ProblemDetails → ApiError
@@ -58,10 +60,14 @@ src/
   state/useBooking.js      the whole draft + catalog in one reducer
   lib/format.js            money, duration, slot/day labels, slot grouping
   ui/States.jsx            Skeleton / EmptyState / ErrorState, themed per demo
-  demos/hub/               Example 1 — HubDemo.jsx + theme.js
-  demos/wizard/            Example 2 — WizardDemo.jsx + theme.js
-  App.jsx                  demo switcher (delete it and keep the one you want)
+  demos/hub/               Example 1 — HubDemo.jsx + theme.js + main.jsx
+  demos/wizard/            Example 2 — WizardDemo.jsx + theme.js + main.jsx
 ```
+
+Each example is its own page and its own bundle, so you can read, copy or delete one without
+touching the other. Everything they share sits in `src/api`, `src/state`, `src/lib` and `src/ui`.
+Adding a third example means adding one folder under `src/demos`, one `*/index.html`, and one
+line in `vite.config.js`.
 
 Styling is inline, on purpose: no CSS framework, no build step beyond Vite, so a customer can lift
 a single file into their own project. Each demo's palette and type live in its `theme.js`.
