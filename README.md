@@ -1,7 +1,7 @@
 # Barberly Booking API — React examples
 
 Two working examples of a guest booking flow built on the **Barberly Booking API** — the
-programmable way to take bookings for a shop that runs on [Barberly](https://barberly.com).
+programmable way to take bookings for a shop that runs on [Barberly](https://www.barberly.com).
 Same endpoints, same state machine, two different ways of presenting the flow.
 
 | Live demo | | |
@@ -58,7 +58,7 @@ screen — revoked keys stay listed with their dates, so an incident can be revi
 
 - **[API reference](https://booking-api.barberly.com/docs)** — every endpoint and field
 - **[OpenAPI document](https://booking-api.barberly.com/swagger/v1/swagger.json)** — generate a client from it
-- **[Barberly](https://barberly.com)** — where the account, the configuration and the keys live
+- **[Barberly](https://www.barberly.com)** — where the account, the configuration and the keys live
 
 <!-- TODO: add the walkthrough video here once it is published. -->
 
