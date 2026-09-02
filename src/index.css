@@ -1,0 +1,6 @@
+* { box-sizing: border-box; }
+body { margin: 0; }
+input, textarea, button { font-family: inherit; }
+
+@keyframes shimmer { 0% { opacity: .35; } 50% { opacity: .8; } 100% { opacity: .35; } }
+@keyframes pulseline { 0% { opacity: .22; } 50% { opacity: .65; } 100% { opacity: .22; } }
