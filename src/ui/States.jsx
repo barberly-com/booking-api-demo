@@ -1,4 +1,5 @@
 import React from "react";
+import { clickable } from "./clickable.js";
 
 // Loading / empty / error blocks, themed by the demo that renders them.
 
@@ -51,11 +52,12 @@ export function ErrorState({ error, onRetry, theme }) {
         <div style={{ fontSize: 13, color: theme.muted, lineHeight: 1.55 }}>{error.detail}</div>
       ) : null}
       {onRetry ? (
-        <div
+        <button
+          type="button"
           onClick={onRetry}
-          role="button"
-          tabIndex={0}
           style={{
+            ...clickable,
+            width: "auto",
             marginTop: 10,
             fontSize: 12,
             letterSpacing: "0.12em",
@@ -66,7 +68,7 @@ export function ErrorState({ error, onRetry, theme }) {
           }}
         >
           Retry
-        </div>
+        </button>
       ) : null}
     </div>
   );

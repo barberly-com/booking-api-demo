@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { clickable } from "../../ui/clickable.js";
 import { useBooking } from "../../state/useBooking.js";
 import { Skeleton, EmptyState, ErrorState } from "../../ui/States.jsx";
 import {
@@ -108,9 +109,9 @@ function Panel({ title, onBack, children }) {
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22 }}>
-        <div
+        <button type="button"
           onClick={onBack}
-          style={{
+          style={{ ...clickable,
             width: 38,
             height: 38,
             border: `1px solid ${theme.hairlineStrong}`,
@@ -122,7 +123,7 @@ function Panel({ title, onBack, children }) {
           }}
         >
           ‹
-        </div>
+        </button>
         <div style={{ fontFamily: theme.display, fontSize: 30 }}>{title}</div>
       </div>
       {children}
@@ -209,12 +210,12 @@ function Hub({ b, onOpen }) {
 
         <div style={{ flex: "1 1 280px", minWidth: 260, position: "sticky", top: 86 }}>
           <Summary b={b}>
-            <div
+            <button type="button"
               onClick={() => derived.count && state.slot && onOpen("details")}
-              style={{ ...primaryButton(derived.count > 0 && !!state.slot), marginTop: 16 }}
+              style={{ ...clickable, ...primaryButton(derived.count > 0 && !!state.slot), marginTop: 16 }}
             >
               {derived.count > 0 && state.slot ? "Book appointment" : "Complete your booking"}
-            </div>
+            </button>
             <div style={{ fontSize: 11, color: theme.faint, marginTop: 10, lineHeight: 1.5 }}>
               {derived.count > 0 && state.slot
                 ? "You'll add your name and phone on the next step."
@@ -229,9 +230,9 @@ function Hub({ b, onOpen }) {
 
 function HubRow({ mono, label, value, sub, onClick, dim, last }) {
   return (
-    <div
+    <button type="button"
       onClick={onClick}
-      style={{
+      style={{ ...clickable,
         display: "flex",
         gap: 16,
         alignItems: "flex-start",
@@ -247,7 +248,7 @@ function HubRow({ mono, label, value, sub, onClick, dim, last }) {
         <div style={{ fontSize: 12, color: theme.muted, marginTop: 5 }}>{sub}</div>
       </div>
       <div style={{ color: theme.faint, fontSize: 18 }}>›</div>
-    </div>
+    </button>
   );
 }
 
@@ -304,13 +305,13 @@ function LocationPanel({ b, onPicked }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       {state.locations.map((l) => (
-        <div
+        <button type="button"
           key={l.id}
           onClick={() => {
             dispatch({ type: "pickLocation", location: l });
             onPicked();
           }}
-          style={row(state.location?.id === l.id)}
+          style={{ ...clickable, ...row(state.location?.id === l.id) }}
         >
           <div style={monogram}>{initials(l.name)}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -323,7 +324,7 @@ function LocationPanel({ b, onPicked }) {
             ) : null}
           </div>
           <div style={{ color: theme.faint, fontSize: 18 }}>›</div>
-        </div>
+        </button>
       ))}
     </div>
   );
@@ -350,12 +351,12 @@ function BarberPanel({ b, query, setQuery, onPicked }) {
         placeholder="Search by name or specialty"
         style={{ ...input, marginBottom: 14 }}
       />
-      <div
+      <button type="button"
         onClick={() => {
           dispatch({ type: "pickAnyTeamMember" });
           onPicked();
         }}
-        style={{ ...row(false), borderLeft: `2px solid ${theme.accent}`, marginBottom: 10 }}
+        style={{ ...clickable, ...row(false), borderLeft: `2px solid ${theme.accent}`, marginBottom: 10 }}
       >
         <div style={monogram}>∗</div>
         <div style={{ flex: 1 }}>
@@ -365,17 +366,17 @@ function BarberPanel({ b, query, setQuery, onPicked }) {
           </div>
         </div>
         <div style={{ color: theme.faint, fontSize: 18 }}>›</div>
-      </div>
+      </button>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {list.map((t) => (
-          <div
+          <button type="button"
             key={t.id}
             onClick={() => {
               dispatch({ type: "pickTeamMember", member: t });
               onPicked();
             }}
-            style={row(state.teamMember?.id === t.id)}
+            style={{ ...clickable, ...row(state.teamMember?.id === t.id) }}
           >
             {t.thumbnailUrl || t.photoUrl ? (
               <div
@@ -397,7 +398,7 @@ function BarberPanel({ b, query, setQuery, onPicked }) {
               ) : null}
             </div>
             <div style={{ color: theme.faint, fontSize: 18 }}>›</div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -445,9 +446,9 @@ function ServicePanel({ b, onDone }) {
               const on = derived.isSelected(s.id);
               return (
                 <div key={s.id}>
-                  <div
+                  <button type="button"
                     onClick={() => dispatch({ type: "toggleService", service: s, categoryId: c.id })}
-                    style={{ ...row(on), alignItems: "flex-start" }}
+                    style={{ ...clickable, ...row(on), alignItems: "flex-start" }}
                   >
                     <div style={{ ...monogram, width: 52, height: 52, flex: "0 0 52px", fontSize: 19 }}>
                       {initials(s.name)}
@@ -467,7 +468,7 @@ function ServicePanel({ b, onDone }) {
                     <div style={checkbox(on)}>
                       {on ? <span style={{ color: theme.bg, fontSize: 13, lineHeight: 1 }}>✓</span> : null}
                     </div>
-                  </div>
+                  </button>
 
                   {on && s.extras?.length ? (
                     <div
@@ -482,7 +483,7 @@ function ServicePanel({ b, onDone }) {
                         {s.extras.map((x) => {
                           const xon = derived.isSelected(x.id);
                           return (
-                            <div
+                            <button type="button"
                               key={x.id}
                               onClick={() =>
                                 dispatch({
@@ -492,7 +493,7 @@ function ServicePanel({ b, onDone }) {
                                   categoryId: c.id,
                                 })
                               }
-                              style={{
+                              style={{ ...clickable,
                                 display: "flex",
                                 gap: 14,
                                 alignItems: "center",
@@ -512,7 +513,7 @@ function ServicePanel({ b, onDone }) {
                               <div style={{ ...checkbox(xon), width: 20, height: 20, flex: "0 0 20px", marginTop: 0 }}>
                                 {xon ? <span style={{ color: theme.bg, fontSize: 12, lineHeight: 1 }}>✓</span> : null}
                               </div>
-                            </div>
+                            </button>
                           );
                         })}
                       </div>
@@ -525,9 +526,9 @@ function ServicePanel({ b, onDone }) {
         </div>
       ))}
 
-      <div
+      <button type="button"
         onClick={onDone}
-        style={{
+        style={{ ...clickable,
           position: "sticky",
           bottom: 16,
           textAlign: "center",
@@ -543,7 +544,7 @@ function ServicePanel({ b, onDone }) {
         {derived.count
           ? `Done · ${derived.count} selected · ${money(derived.price)}`
           : "Done"}
-      </div>
+      </button>
     </div>
   );
 }
@@ -599,10 +600,10 @@ function TimePanel({ b, onDone }) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6 }}>
             {padStart(state.days).map((d, i) =>
               d ? (
-                <div
+                <button type="button"
                   key={d.date || i}
                   onClick={() => d.isAvailable && dispatch({ type: "pickDay", day: d })}
-                  style={{
+                  style={{ ...clickable,
                     aspectRatio: "1 / 1",
                     display: "flex",
                     alignItems: "center",
@@ -621,7 +622,7 @@ function TimePanel({ b, onDone }) {
                   }}
                 >
                   {d.day}
-                </div>
+                </button>
               ) : (
                 <div key={`pad-${i}`} style={{ aspectRatio: "1 / 1" }} />
               )
@@ -641,10 +642,10 @@ function TimePanel({ b, onDone }) {
               {slots.map((s) => {
                 const on = state.slot?.startMinutesOfDay === s.startMinutesOfDay;
                 return (
-                  <div
+                  <button type="button"
                     key={s.startMinutesOfDay}
                     onClick={() => dispatch({ type: "pickSlot", slot: { ...s, date: s.date || state.day.date } })}
-                    style={{
+                    style={{ ...clickable,
                       padding: "12px 6px",
                       textAlign: "center",
                       fontSize: 13,
@@ -656,7 +657,7 @@ function TimePanel({ b, onDone }) {
                     }}
                   >
                     {slotLabel(s)}
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -664,9 +665,9 @@ function TimePanel({ b, onDone }) {
         </>
       )}
 
-      <div
+      <button type="button"
         onClick={onDone}
-        style={{
+        style={{ ...clickable,
           position: "sticky",
           bottom: 16,
           marginTop: 20,
@@ -681,16 +682,16 @@ function TimePanel({ b, onDone }) {
         }}
       >
         {state.slot ? `Done · ${slotLabel(state.slot)}, ${dayLabel(state.day)}` : "Done"}
-      </div>
+      </button>
     </div>
   );
 }
 
 function Stepper({ children, onClick }) {
   return (
-    <div
+    <button type="button"
       onClick={onClick}
-      style={{
+      style={{ ...clickable,
         width: 32,
         height: 32,
         flex: "0 0 32px",
@@ -702,7 +703,7 @@ function Stepper({ children, onClick }) {
       }}
     >
       {children}
-    </div>
+    </button>
   );
 }
 
@@ -773,18 +774,18 @@ function DetailsPanel({ b, onFixTime }) {
 
       <div style={{ flex: "1 1 260px", minWidth: 250 }}>
         <Summary b={b}>
-          <div
+          <button type="button"
             onClick={() => derived.ready && b.submit()}
-            style={{ ...primaryButton(derived.ready && !state.submitting), marginTop: 16 }}
+            style={{ ...clickable, ...primaryButton(derived.ready && !state.submitting), marginTop: 16 }}
           >
             {state.submitting ? "Booking…" : "Confirm booking"}
-          </div>
+          </button>
           {state.errors.booking ? (
             <div style={{ marginTop: 14 }}>
               <ErrorState error={state.errors.booking} theme={theme} />
-              <div
+              <button type="button"
                 onClick={onFixTime}
-                style={{
+                style={{ ...clickable,
                   fontSize: 12,
                   color: theme.accent,
                   cursor: "pointer",
@@ -794,7 +795,7 @@ function DetailsPanel({ b, onFixTime }) {
                 }}
               >
                 Pick another time
-              </div>
+              </button>
             </div>
           ) : null}
         </Summary>
@@ -878,9 +879,9 @@ function Confirmation({ b }) {
         </div>
 
         <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
-          <div
+          <button type="button"
             onClick={() => dispatch({ type: "reset" })}
-            style={{
+            style={{ ...clickable,
               flex: "1 1 160px",
               textAlign: "center",
               padding: 14,
@@ -890,10 +891,10 @@ function Confirmation({ b }) {
             }}
           >
             Book another
-          </div>
-          <div
+          </button>
+          <button type="button"
             onClick={b.cancel}
-            style={{
+            style={{ ...clickable,
               flex: "1 1 160px",
               textAlign: "center",
               padding: 14,
@@ -904,7 +905,7 @@ function Confirmation({ b }) {
             }}
           >
             Cancel appointment
-          </div>
+          </button>
         </div>
       </div>
     </div>

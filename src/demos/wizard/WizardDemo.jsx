@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { clickable } from "../../ui/clickable.js";
 import { useBooking } from "../../state/useBooking.js";
 import { Skeleton, EmptyState, ErrorState } from "../../ui/States.jsx";
 import {
@@ -170,9 +171,9 @@ export default function WizardDemo() {
 
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "44px 22px 0" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: 18, marginBottom: 40 }}>
-          <div
+          <button type="button"
             onClick={() => index > 0 && go(visible[index - 1])}
-            style={{
+            style={{ ...clickable,
               width: 38,
               height: 38,
               flex: "0 0 38px",
@@ -187,7 +188,7 @@ export default function WizardDemo() {
             }}
           >
             ←
-          </div>
+          </button>
           <div style={{ minWidth: 0 }}>
             <div style={{ ...microLabel, color: theme.faint, marginBottom: 12 }}>
               Step {index + 1} of {visible.length}
@@ -233,9 +234,9 @@ export default function WizardDemo() {
             <div style={{ ...microLabel, color: theme.faint, marginBottom: 7 }}>{bar[0]}</div>
             <div style={{ fontSize: 14, letterSpacing: "0.06em" }}>{bar[1]}</div>
           </div>
-          <div onClick={next} style={primaryButton(stepReady)}>
+          <button type="button" onClick={next} style={{ ...clickable, ...primaryButton(stepReady) }}>
             {bar[2]}
-          </div>
+          </button>
         </div>
       </div>
     </div>
@@ -259,7 +260,7 @@ function LocationStep({ b }) {
       {state.locations.map((l) => {
         const on = state.location?.id === l.id;
         return (
-          <div key={l.id} onClick={() => dispatch({ type: "pickLocation", location: l })} style={row(on)}>
+          <button type="button" key={l.id} onClick={() => dispatch({ type: "pickLocation", location: l })} style={{ ...clickable, ...row(on) }}>
             <div
               style={{
                 width: 20,
@@ -280,7 +281,7 @@ function LocationStep({ b }) {
                 {l.rating} ★ · {l.reviewsCount ?? 0}
               </div>
             ) : null}
-          </div>
+          </button>
         );
       })}
     </div>
@@ -309,9 +310,9 @@ function BarberStep({ b, query, setQuery }) {
         style={{ ...underlineInput, maxWidth: 420, marginBottom: 30 }}
       />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(185px, 1fr))", gap: 12 }}>
-        <div
+        <button type="button"
           onClick={() => dispatch({ type: "pickAnyTeamMember" })}
-          style={{
+          style={{ ...clickable,
             aspectRatio: "4 / 5",
             padding: 18,
             display: "flex",
@@ -327,16 +328,16 @@ function BarberStep({ b, query, setQuery }) {
             Any barber
           </div>
           <div style={{ fontSize: 14, color: theme.muted, lineHeight: 1.6 }}>First one free at your time</div>
-        </div>
+        </button>
 
         {list.map((t) => {
           const on = state.teamMember?.id === t.id;
           const photo = t.photoUrl || t.thumbnailUrl;
           return (
-            <div
+            <button type="button"
               key={t.id}
               onClick={() => dispatch({ type: "pickTeamMember", member: t })}
-              style={{
+              style={{ ...clickable,
                 position: "relative",
                 aspectRatio: "4 / 5",
                 overflow: "hidden",
@@ -402,7 +403,7 @@ function BarberStep({ b, query, setQuery }) {
                 </div>
                 {t.title ? <div style={{ fontSize: 13, color: theme.secondary }}>{t.title}</div> : null}
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
@@ -455,9 +456,9 @@ function ServiceStep({ b }) {
             const on = derived.isSelected(s.id);
             return (
               <div key={s.id}>
-                <div
+                <button type="button"
                   onClick={() => dispatch({ type: "toggleService", service: s, categoryId: c.id })}
-                  style={{
+                  style={{ ...clickable,
                     display: "flex",
                     gap: 20,
                     alignItems: "center",
@@ -483,7 +484,7 @@ function ServiceStep({ b }) {
                   <div style={checkbox(on)}>
                     {on ? <span style={{ color: theme.bg, fontSize: 12, lineHeight: 1 }}>✓</span> : null}
                   </div>
-                </div>
+                </button>
 
                 {on && s.extras?.length ? (
                   <div
@@ -498,12 +499,12 @@ function ServiceStep({ b }) {
                       {s.extras.map((x) => {
                         const xon = derived.isSelected(x.id);
                         return (
-                          <div
+                          <button type="button"
                             key={x.id}
                             onClick={() =>
                               dispatch({ type: "toggleService", service: x, parentServiceId: s.id, categoryId: c.id })
                             }
-                            style={{
+                            style={{ ...clickable,
                               display: "flex",
                               gap: 16,
                               alignItems: "center",
@@ -523,7 +524,7 @@ function ServiceStep({ b }) {
                             <div style={checkbox(xon, 20)}>
                               {xon ? <span style={{ color: theme.bg, fontSize: 11, lineHeight: 1 }}>✓</span> : null}
                             </div>
-                          </div>
+                          </button>
                         );
                       })}
                     </div>
@@ -577,10 +578,10 @@ function TimeStep({ b }) {
         {(state.days || []).map((d) => {
           const on = state.day?.date === d.date;
           return (
-            <div
+            <button type="button"
               key={d.date}
               onClick={() => d.isAvailable && dispatch({ type: "pickDay", day: d })}
-              style={{
+              style={{ ...clickable,
                 flex: "0 0 74px",
                 padding: "14px 0",
                 textAlign: "center",
@@ -595,7 +596,7 @@ function TimeStep({ b }) {
               </div>
               <div style={{ fontSize: 21 }}>{d.day}</div>
               <div style={{ fontSize: 11, marginTop: 6 }}>{d.isAvailable ? "" : "Full"}</div>
-            </div>
+            </button>
           );
         })}
         <NavCell onClick={() => step(1)}>→</NavCell>
@@ -612,10 +613,10 @@ function TimeStep({ b }) {
                 {g.slots.map((s) => {
                   const on = state.slot?.startMinutesOfDay === s.startMinutesOfDay;
                   return (
-                    <div
+                    <button type="button"
                       key={s.startMinutesOfDay}
                       onClick={() => dispatch({ type: "pickSlot", slot: { ...s, date: s.date || state.day.date } })}
-                      style={{
+                      style={{ ...clickable,
                         padding: "15px 6px",
                         textAlign: "center",
                         fontSize: 13,
@@ -627,7 +628,7 @@ function TimeStep({ b }) {
                       }}
                     >
                       {slotLabel(s)}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -640,12 +641,12 @@ function TimeStep({ b }) {
           theme={theme}
           action={
             bookable.length ? (
-              <div
+              <button type="button"
                 onClick={() => dispatch({ type: "pickDay", day: bookable[0] })}
-                style={{ ...primaryButton(true), display: "inline-block" }}
+                style={{ ...clickable, ...primaryButton(true), display: "inline-block" }}
               >
                 Next available day
-              </div>
+              </button>
             ) : null
           }
         >
@@ -658,9 +659,9 @@ function TimeStep({ b }) {
 
 function NavCell({ children, onClick }) {
   return (
-    <div
+    <button type="button"
       onClick={onClick}
-      style={{
+      style={{ ...clickable,
         flex: "0 0 44px",
         alignSelf: "stretch",
         display: "flex",
@@ -672,7 +673,7 @@ function NavCell({ children, onClick }) {
       }}
     >
       {children}
-    </div>
+    </button>
   );
 }
 
@@ -746,9 +747,9 @@ function DetailsStep({ b, onFixTime }) {
         {state.errors.booking ? (
           <div style={{ marginTop: 18 }}>
             <ErrorState error={state.errors.booking} theme={theme} />
-            <div
+            <button type="button"
               onClick={onFixTime}
-              style={{
+              style={{ ...clickable,
                 marginTop: 14,
                 ...microLabel,
                 color: theme.text,
@@ -759,7 +760,7 @@ function DetailsStep({ b, onFixTime }) {
               }}
             >
               Choose a new time
-            </div>
+            </button>
           </div>
         ) : null}
       </div>
@@ -829,12 +830,12 @@ function Confirmed({ b }) {
           </div>
         </div>
         <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-          <div onClick={() => dispatch({ type: "reset" })} style={{ ...primaryButton(true), flex: "1 1 150px" }}>
+          <button type="button" onClick={() => dispatch({ type: "reset" })} style={{ ...clickable, ...primaryButton(true), flex: "1 1 150px" }}>
             Book another
-          </div>
-          <div onClick={b.cancel} style={{ ...primaryButton(false), flex: "1 1 150px", cursor: "pointer", color: theme.muted }}>
+          </button>
+          <button type="button" onClick={b.cancel} style={{ ...clickable, ...primaryButton(false), flex: "1 1 150px", cursor: "pointer", color: theme.muted }}>
             Cancel appointment
-          </div>
+          </button>
         </div>
       </div>
     </div>
