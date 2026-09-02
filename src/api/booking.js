@@ -31,15 +31,11 @@ export const getAvailability = (locationId, year, month, query = {}) =>
 
 // POST /v1/bookings -> BookingModel (201)
 // Omit teamMemberId to let the salon assign someone.
-export const createBooking = ({
-  locationId,
-  teamMemberId,
-  serviceIds,
-  timeSlot,
-  customer,
-  note,
-}) =>
-  api.post("/v1/bookings", {
+export const createBooking = (booking) => api.post("/v1/bookings", bookingBody(booking));
+
+// Create and update take the same body, so it is built once.
+function bookingBody({ locationId, teamMemberId, serviceIds, timeSlot, customer, note }) {
+  return {
     locationId,
     teamMemberId: teamMemberId || undefined,
     serviceIds,
@@ -56,7 +52,15 @@ export const createBooking = ({
       phoneNumber: customer.phoneNumber,
     },
     note: note || undefined,
-  });
+  };
+}
+
+// PUT /v1/bookings/{id} -> BookingModel
+// A full replacement, not a patch: send every field again, exactly as for create.
+// While the guest picks a new slot, pass this booking's id as `bookingId` in the
+// availability queries, or its current slot comes back looking taken by itself.
+export const updateBooking = (id, booking) =>
+  api.put(`/v1/bookings/${id}`, bookingBody(booking));
 
 // GET /v1/bookings/{id} -> BookingModel
 export const getBooking = (id) => api.get(`/v1/bookings/${id}`);

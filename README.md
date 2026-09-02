@@ -48,7 +48,7 @@ Then issue a key in **Apps → Booking API → Create key**. Each key carries th
 |---|---|
 | `catalog:read` | locations, team members, services, availability |
 | `bookings:read` | read a booking |
-| `bookings:write` | create and cancel bookings |
+| `bookings:write` | create, update and cancel bookings |
 | `accounts:write` | register, authenticate and recover customer accounts |
 
 Send it as an `X-Api-Key` header on every request. Keys can be revoked or deleted from the same
@@ -136,6 +136,16 @@ a single file into their own project. Each demo's palette and type live in its `
 
 The three catalog calls are POSTs because they take an `AvailabilityQuery` — everything the guest
 has already picked. Sending it narrows the response to what is still bookable.
+
+One endpoint the examples do not use: **`PUT /v1/bookings/{id}`**, which reschedules or otherwise
+changes a booking. It is a full replacement — send every field again, not a partial patch — and
+it takes the same body as `POST /v1/bookings`. Two things to know before building on it:
+
+- **Pass `bookingId` in the availability queries** while the guest is picking a new slot. All
+  three catalog calls accept it, and it stops the booking's own slot from looking taken by
+  itself. `api/booking.js` already threads it through; the demos just never set it.
+- **The salon can refuse.** If the minimum notice for changes has passed, the call returns `400`
+  with the reason in `ProblemDetails`, the same shape as every other error here.
 
 ## Behaviour worth knowing
 
