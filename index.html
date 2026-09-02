@@ -66,6 +66,7 @@
       .lede { font-size: 16px; color: var(--muted); margin: 0 0 10px; max-width: 62ch; line-height: 1.55; }
 
       .note { font-size: 13px; color: var(--faint); margin: 0 0 40px; max-width: 62ch; line-height: 1.6; }
+      .note a { color: var(--muted); }
 
       .micro {
         font-size: 11px;
@@ -134,8 +135,12 @@
         as you read this.
       </p>
       <p class="note">
-        They run against a throwaway demo tenant with a public key, so every screen shows live
-        data and every booking you make is real. Book as often as you like; the data is
+        The Booking API is one of the client-facing tools of a
+        <a href="https://barberly.com">Barberly</a> account, alongside the shop&rsquo;s app,
+        website and booking widgets. It books the way a client books: the catalog, the
+        availability and the booking rules you will run into here are the ones the shop
+        configured for its own booking page. These pages run against a demo shop with a public key, so everything you
+        see is live and every booking is real. Book as often as you like; the data is
         disposable.
       </p>
 
@@ -165,6 +170,7 @@
       <footer>
         <a href="https://github.com/barberly-com/booking-api-demo">Source on GitHub</a>
         <a href="https://booking-api.barberly.com/docs">API reference</a>
+        <a href="https://barberly.com">Barberly</a>
         <span>MIT licensed</span>
       </footer>
     </main>

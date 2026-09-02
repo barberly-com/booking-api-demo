@@ -1,6 +1,7 @@
 # Barberly Booking API — React examples
 
-Two working examples of a guest booking flow built on the **Barberly Booking API**.
+Two working examples of a guest booking flow built on the **Barberly Booking API** — the
+programmable way to take bookings for a shop that runs on [Barberly](https://barberly.com).
 Same endpoints, same state machine, two different ways of presenting the flow.
 
 | Live demo | | |
@@ -11,6 +12,56 @@ Same endpoints, same state machine, two different ways of presenting the flow.
 Both cover: location → barber → services (with add-ons) → date & time → guest details →
 confirmation, with **no login**, plus loading, empty and error states.
 
+## What the Booking API is
+
+A barbershop runs its business in Barberly: locations, team, services and add-ons, working
+hours, pricing, and the rules that decide how clients are allowed to book. On top of that
+configuration Barberly gives the shop its client-facing tools — a mobile app, a website,
+booking widgets, a queue kiosk, Google Reserve.
+
+**The Booking API is one more of those tools.** It is not a back-office API and it does not
+open up the business side of the account. It books the way a client books, and it obeys exactly
+what the shop set up for its own booking page:
+
+- A slot that is closed to clients is closed here too. Availability returns the client's view of
+  the calendar, never the staff one.
+- If the shop approves appointments by hand, bookings come back `Unconfirmed` here as well.
+- If the shop requires a registered customer, this API requires a `customerId` too.
+- Working hours, lead times, service durations, which barber does what — all read from the same
+  settings, live.
+
+The API invents no rules of its own and can bypass none. That is the point: whatever the shop
+already configured for its own booking page applies unchanged to whatever you build on top —
+your own booking UI in your own brand, a booking bot in WhatsApp or a chat widget, a kiosk, a
+booking step inside a site you already run.
+
+## Before you build
+
+You need a Barberly account. The catalog these calls return is the one you create there:
+locations, team members, services, working hours, booking rules. The API reads that
+configuration — it does not create any of it. So the first step is setting the shop up in
+Barberly, exactly as you would to launch its website or its app.
+
+Then issue a key in **Apps → Booking API → Create key**. Each key carries the scopes you grant it:
+
+| Scope | Grants |
+|---|---|
+| `catalog:read` | locations, team members, services, availability |
+| `bookings:read` | read a booking |
+| `bookings:write` | create and cancel bookings |
+| `accounts:write` | register, authenticate and recover customer accounts |
+
+Send it as an `X-Api-Key` header on every request. Keys can be revoked or deleted from the same
+screen — revoked keys stay listed with their dates, so an incident can be reviewed afterwards.
+
+## Reference
+
+- **[API reference](https://booking-api.barberly.com/docs)** — every endpoint and field
+- **[OpenAPI document](https://booking-api.barberly.com/swagger/v1/swagger.json)** — generate a client from it
+- **[Barberly](https://barberly.com)** — where the account, the configuration and the keys live
+
+<!-- TODO: add the walkthrough video here once it is published. -->
+
 ## Run it
 
 ```bash
@@ -18,16 +69,16 @@ npm install
 npm run dev
 ```
 
-That's the whole setup — no signup, no configuration. The examples call the live API against a
-public demo tenant. Open the printed URL for the index, or go straight to `/hub/` or `/wizard/`.
+No signup needed to look around: the examples ship with a key for a public demo shop, already
+configured with locations, barbers and services, so they show live data straight away. Open the
+printed URL for the index, or go straight to `/hub/` or `/wizard/`.
 
 ## The API key
 
-The API authenticates with a single `X-Api-Key` header, and the key committed in
-`src/config.js` is deliberately public. It belongs to a throwaway demo tenant and carries only
-the scopes this flow needs: read the catalog, read and create bookings. It cannot register
-customers, cannot send mail, and cannot see anything outside that tenant. Book as often as you
-like — the data is disposable.
+The key committed in `src/config.js` is deliberately public. It belongs to a throwaway demo shop
+and carries only the scopes this flow needs — `catalog:read`, `bookings:read`, `bookings:write`.
+It cannot register customers, cannot send mail, and cannot see anything outside that shop. Book
+as often as you like; the data is disposable.
 
 **Your own key is not like that.** Everything in a browser bundle is readable by anyone who
 loads the page, so a key with real scopes does not belong in the client. Keep it on a server
